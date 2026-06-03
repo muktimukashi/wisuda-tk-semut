@@ -20,7 +20,7 @@ const invitationSummary = [
     "Tanggal: Sabtu, 13 Juni 2026",
     "Waktu: 09.00 - 11.30 WIB",
     "Dresscode Orang Tua: Batik",
-    "Lokasi: Gedung Sekolah TK Semut"
+    "Lokasi: KB Semut-Semut the Natural School"
 ].join("\n");
 
 let musicFadeTimer = null;
