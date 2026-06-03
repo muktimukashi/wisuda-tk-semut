@@ -5,7 +5,7 @@
     --text: #433330;
     --muted: #826b62;
     --primary: #75B754;
-    --primary-deep: #b75B754;
+    --primary-deep: #5f9141;
     --secondary: #7ca67e;
     --secondary-deep: #5f8661;
     --border: rgba(171, 121, 93, 0.18);
@@ -27,10 +27,18 @@ body {
     font-family: "Nunito", sans-serif;
     color: var(--text);
     background:
-        radial-gradient(circle at top left, rgba(245, 197, 159, 0.55), transparent 30%),
-        radial-gradient(circle at right 20%, rgba(169, 208, 172, 0.38), transparent 24%),
-        linear-gradient(180deg, #fff7ef 0%, #fffdf8 100%);
+        radial-gradient(circle at 18% 18%, rgba(255, 233, 145, 0.65), transparent 12%),
+        radial-gradient(circle at top left, rgba(245, 197, 159, 0.34), transparent 28%),
+        radial-gradient(circle at right 18%, rgba(169, 208, 172, 0.18), transparent 22%),
+        linear-gradient(180deg, #8fd3ff 0%, #bfe9ff 24%, #fff6de 58%, #fffdf8 100%);
     overflow-x: hidden;
+}
+
+body.sunny {
+    background:
+        radial-gradient(circle at 18% 16%, rgba(255, 234, 145, 0.78), transparent 14%),
+        radial-gradient(circle at 78% 18%, rgba(255, 198, 122, 0.38), transparent 22%),
+        linear-gradient(180deg, #7fd0ff 0%, #b8e6ff 26%, #fff5d5 60%, #fffdf8 100%);
 }
 
 button,
@@ -41,6 +49,79 @@ a {
 .page-shell {
     position: relative;
     isolation: isolate;
+    min-height: 100vh;
+}
+
+.sun-widget {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 1200;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px 10px 10px;
+    border: 1px solid rgba(255, 204, 105, 0.35);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 14px 30px rgba(96, 67, 54, 0.14);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.sun-widget:hover {
+    transform: translateY(-2px);
+}
+
+.sun-core {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fffbe6 0 24%, #ffd65a 44%, #f0a61f 100%);
+    box-shadow: 0 0 0 8px rgba(255, 214, 90, 0.12), 0 0 28px rgba(255, 194, 82, 0.6);
+    animation: sunPulse 3.8s ease-in-out infinite;
+}
+
+.sun-core::before,
+.sun-core::after {
+    content: "";
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 207, 94, 0.28);
+}
+
+.sun-core::after {
+    inset: -16px;
+    border-color: rgba(255, 207, 94, 0.14);
+}
+
+.sun-widget::before,
+.sun-widget::after {
+    content: "";
+    position: absolute;
+    width: 42px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 199, 72, 0.6), transparent);
+    left: 8px;
+    top: 50%;
+    transform-origin: center;
+    animation: raySweep 4.5s ease-in-out infinite;
+}
+
+.sun-widget::after {
+    width: 26px;
+    left: auto;
+    right: 10px;
+    animation-delay: -2.2s;
+}
+
+.sun-label {
+    font-weight: 800;
+    color: var(--secondary-deep);
+    font-size: 0.86rem;
 }
 
 .ambient,
@@ -61,7 +142,7 @@ a {
     right: -70px;
     width: 320px;
     height: 320px;
-    background: linear-gradient(135deg, rgba(246, 192, 148, 0.8), rgba(255, 239, 218, 0.2));
+    background: linear-gradient(135deg, rgba(255, 221, 123, 0.78), rgba(255, 239, 218, 0.12));
 }
 
 .ambient-bottom {
@@ -69,7 +150,7 @@ a {
     bottom: 40px;
     width: 280px;
     height: 280px;
-    background: linear-gradient(135deg, rgba(150, 189, 150, 0.75), rgba(255, 255, 255, 0.2));
+    background: linear-gradient(135deg, rgba(123, 194, 214, 0.42), rgba(255, 255, 255, 0.16));
 }
 
 .spark {
@@ -90,6 +171,171 @@ a {
     bottom: 12%;
     right: -30px;
     animation-delay: -6s;
+}
+
+.cloud {
+    position: fixed;
+    z-index: -1;
+    width: 120px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 999px;
+    filter: blur(0.2px);
+    opacity: 0.72;
+    animation: driftCloud 18s linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+    content: "";
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+}
+
+.cloud::before {
+    width: 48px;
+    height: 48px;
+    left: 16px;
+    top: -22px;
+}
+
+.cloud::after {
+    width: 60px;
+    height: 60px;
+    right: 14px;
+    top: -28px;
+}
+
+.cloud-left {
+    top: 12%;
+    left: -40px;
+}
+
+.cloud-right {
+    top: 18%;
+    right: -50px;
+    animation-duration: 22s;
+    animation-delay: -9s;
+}
+
+.bird {
+    position: fixed;
+    z-index: -1;
+    width: 28px;
+    height: 14px;
+    opacity: 0.85;
+    animation: birdFly 16s linear infinite;
+}
+
+.bird::before,
+.bird::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border-top: 2px solid rgba(64, 93, 111, 0.68);
+    border-radius: 100% 100% 0 0;
+}
+
+.bird::before {
+    left: 0;
+    transform: translateY(-50%) rotate(-22deg);
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+}
+
+.bird::after {
+    right: 0;
+    transform: translateY(-50%) rotate(22deg);
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+}
+
+.bird-1 {
+    top: 12%;
+    left: 12%;
+}
+
+.bird-2 {
+    top: 18%;
+    left: 28%;
+    animation-duration: 18s;
+    animation-delay: -5s;
+}
+
+.bird-3 {
+    top: 9%;
+    right: 24%;
+    animation-duration: 20s;
+    animation-delay: -10s;
+}
+
+.bird-4 {
+    top: 16%;
+    right: 10%;
+    animation-duration: 17s;
+    animation-delay: -12s;
+}
+
+.sea-glow {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 74px;
+    height: 180px;
+    z-index: -2;
+    background:
+        radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.34), transparent 22%),
+        radial-gradient(circle at 50% 48%, rgba(98, 198, 224, 0.42), transparent 42%),
+        linear-gradient(180deg, rgba(91, 188, 222, 0.34), rgba(66, 155, 197, 0.7));
+}
+
+.sea-line {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    height: 26px;
+    z-index: -2;
+    background:
+        linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.72) 16%, transparent 32%, rgba(255, 255, 255, 0.52) 54%, transparent 72%, rgba(255, 255, 255, 0.62) 86%, transparent 100%);
+    opacity: 0.55;
+    filter: blur(1px);
+    animation: waveShift 8s linear infinite;
+}
+
+.beach-horizon {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 90px;
+    height: 140px;
+    z-index: -2;
+    background:
+        linear-gradient(180deg, rgba(140, 223, 255, 0.55) 0%, rgba(91, 188, 222, 0.22) 48%, rgba(255, 255, 255, 0) 100%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
+}
+
+.beach-horizon::before {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 28px;
+    background: linear-gradient(180deg, rgba(239, 214, 160, 0.12), rgba(226, 190, 125, 0.35));
+}
+
+.beach-sand {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 84px;
+    z-index: -2;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.28), transparent 24%),
+        linear-gradient(180deg, rgba(255, 248, 234, 0.2), rgba(255, 230, 181, 0.52));
 }
 
 .container,
@@ -437,33 +683,14 @@ a {
     line-height: 1.7;
 }
 
-.audio-toggle {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    border: 1px solid rgba(214, 132, 95, 0.24);
-    background: rgba(255, 255, 255, 0.82);
-    box-shadow: 0 14px 30px rgba(96, 67, 54, 0.16);
-    z-index: 50;
-}
-
-.audio-toggle.hidden {
-    display: none;
-}
-
-.audio-icon {
-    font-size: 0.9rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    color: var(--primary-deep);
-}
-
 .footer {
-    padding: 12px 0 44px;
+    margin-top: 12px;
+    padding: 18px 20px 34px;
     text-align: center;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(10px);
 }
 
 .footer p + p {
@@ -547,4 +774,135 @@ a {
         justify-content: center;
         text-align: center;
     }
+
+    .cloud {
+        width: 90px;
+        height: 30px;
+    }
+
+    .cloud::before {
+        width: 38px;
+        height: 38px;
+    }
+
+    .cloud::after {
+        width: 46px;
+        height: 46px;
+    }
+
+    .bird {
+        width: 22px;
+        height: 11px;
+    }
+
+    .sea-glow {
+        bottom: 74px;
+        height: 180px;
+    }
+
+    .sea-line {
+        bottom: 86px;
+    }
+
+    .beach-horizon {
+        bottom: 68px;
+        height: 130px;
+    }
+
+    .beach-sand {
+        height: 72px;
+    }
+}
+
+body.sunny .ambient-top {
+    background: linear-gradient(135deg, rgba(255, 216, 107, 0.92), rgba(255, 246, 207, 0.26));
+}
+
+body.sunny .ambient-bottom {
+    background: linear-gradient(135deg, rgba(244, 196, 118, 0.72), rgba(255, 255, 255, 0.18));
+}
+
+body.sunny .hero-card::after {
+    background: radial-gradient(circle, rgba(255, 202, 92, 0.3) 0%, transparent 70%);
+}
+
+body.sunny .spark {
+    opacity: 0.45;
+}
+
+body.sunny .sun-core {
+    box-shadow: 0 0 0 10px rgba(255, 214, 90, 0.16), 0 0 34px rgba(255, 194, 82, 0.8);
+}
+
+body.sunny .sun-widget::before,
+body.sunny .sun-widget::after {
+    opacity: 1;
+}
+
+body.sunny .cloud {
+    opacity: 0.88;
+}
+
+body.sunny .beach-horizon {
+    background:
+        linear-gradient(180deg, rgba(140, 223, 255, 0.62) 0%, rgba(91, 188, 222, 0.22) 48%, rgba(255, 255, 255, 0) 100%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
+}
+
+body.sunny .beach-sand {
+    background:
+        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.36), transparent 22%),
+        linear-gradient(180deg, rgba(255, 248, 234, 0.24), rgba(255, 230, 181, 0.58));
+}
+
+body.sunny .sea-glow {
+    background:
+        radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.42), transparent 20%),
+        radial-gradient(circle at 50% 48%, rgba(112, 210, 236, 0.54), transparent 42%),
+        linear-gradient(180deg, rgba(91, 188, 222, 0.48), rgba(66, 155, 197, 0.86));
+}
+
+body.sunny .sea-line {
+    opacity: 0.72;
+}
+
+@keyframes sunPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+
+@keyframes raySweep {
+    0%, 100% { transform: translateX(0) rotate(0deg); opacity: 0.35; }
+    50% { transform: translateX(2px) rotate(8deg); opacity: 0.95; }
+}
+
+@keyframes driftCloud {
+    from { transform: translateX(0); }
+    to { transform: translateX(140px); }
+}
+
+@keyframes birdFly {
+    0% {
+        transform: translateX(0) translateY(0) scale(1);
+        opacity: 0;
+    }
+    8% {
+        opacity: 0.85;
+    }
+    50% {
+        transform: translateX(120px) translateY(-10px) scale(1.03);
+        opacity: 0.9;
+    }
+    92% {
+        opacity: 0.65;
+    }
+    100% {
+        transform: translateX(240px) translateY(4px) scale(0.98);
+        opacity: 0;
+    }
+}
+
+@keyframes waveShift {
+    from { background-position: 0 0; }
+    to { background-position: 220px 0; }
 }

@@ -1,11 +1,17 @@
 const welcomeOverlay = document.getElementById("welcomeOverlay");
 const openInvitationBtn = document.getElementById("openInvitationBtn");
 const bgMusic = document.getElementById("bgMusic");
-const audioToggle = document.getElementById("audioToggle");
-const audioIcon = document.getElementById("audioIcon");
+const sunWidget = document.getElementById("sunWidget");
 const copyAgendaBtn = document.getElementById("copyAgendaBtn");
 const shareBtn = document.getElementById("shareBtn");
 const countdownNote = document.getElementById("countdownNote");
+
+const countdownFields = {
+    days: document.getElementById("days"),
+    hours: document.getElementById("hours"),
+    minutes: document.getElementById("minutes"),
+    seconds: document.getElementById("seconds")
+};
 
 const eventDate = new Date("2026-06-13T09:00:00+07:00");
 const invitationSummary = [
@@ -17,37 +23,69 @@ const invitationSummary = [
     "Lokasi: Gedung Sekolah TK Semut"
 ].join("\n");
 
-function setAudioState(isPlaying) {
-    audioIcon.textContent = isPlaying ? "ON" : "OFF";
-    audioToggle.setAttribute("aria-pressed", String(isPlaying));
+let musicFadeTimer = null;
+
+function setCountdownText(days, hours, minutes, seconds) {
+    countdownFields.days.textContent = days;
+    countdownFields.hours.textContent = hours;
+    countdownFields.minutes.textContent = minutes;
+    countdownFields.seconds.textContent = seconds;
+}
+
+function setSunState(isSunny) {
+    document.body.classList.toggle("sunny", isSunny);
+    sunWidget.setAttribute("aria-pressed", String(isSunny));
+    sunWidget.querySelector(".sun-label").textContent = isSunny ? "Musik ON" : "Musik OFF";
+}
+
+function fadeAudio(targetVolume, duration = 1200) {
+    window.clearInterval(musicFadeTimer);
+
+    const startVolume = bgMusic.volume;
+    const volumeDelta = targetVolume - startVolume;
+    const startedAt = performance.now();
+
+    musicFadeTimer = window.setInterval(() => {
+        const elapsed = performance.now() - startedAt;
+        const progress = Math.min(elapsed / duration, 1);
+        bgMusic.volume = Math.max(0, Math.min(1, startVolume + volumeDelta * progress));
+
+        if (progress >= 1) {
+            window.clearInterval(musicFadeTimer);
+            musicFadeTimer = null;
+        }
+    }, 50);
+}
+
+async function startMusic() {
+    bgMusic.volume = 0;
+
+    try {
+        await bgMusic.play();
+        fadeAudio(1);
+    } catch {
+        return;
+    }
+}
+
+async function toggleSun() {
+    const nextState = !document.body.classList.contains("sunny");
+    setSunState(nextState);
+
+    if (nextState && bgMusic.paused) {
+        await startMusic();
+    } else if (!nextState && !bgMusic.paused) {
+        fadeAudio(0, 500);
+        window.setTimeout(() => bgMusic.pause(), 520);
+    }
 }
 
 async function openInvitation() {
     welcomeOverlay.classList.add("hidden");
     welcomeOverlay.setAttribute("aria-hidden", "true");
-    audioToggle.classList.remove("hidden");
 
-    try {
-        await bgMusic.play();
-        setAudioState(true);
-    } catch (error) {
-        setAudioState(false);
-    }
-}
-
-async function toggleAudio() {
-    if (bgMusic.paused) {
-        try {
-            await bgMusic.play();
-            setAudioState(true);
-        } catch (error) {
-            setAudioState(false);
-        }
-        return;
-    }
-
-    bgMusic.pause();
-    setAudioState(false);
+    setSunState(true);
+    await startMusic();
 }
 
 function updateCountdown() {
@@ -55,24 +93,23 @@ function updateCountdown() {
     const diff = eventDate - now;
 
     if (diff <= 0) {
-        document.getElementById("days").textContent = "00";
-        document.getElementById("hours").textContent = "00";
-        document.getElementById("minutes").textContent = "00";
-        document.getElementById("seconds").textContent = "00";
+        setCountdownText("00", "00", "00", "00");
         countdownNote.textContent = "Hari bahagia telah tiba. Sampai jumpa di acara.";
         return;
     }
 
     const totalSeconds = Math.floor(diff / 1000);
-    const days = Math.floor(totalSeconds / (60 * 60 * 24));
-    const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    document.getElementById("days").textContent = String(days).padStart(2, "0");
-    document.getElementById("hours").textContent = String(hours).padStart(2, "0");
-    document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
-    document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+    setCountdownText(
+        String(days).padStart(2, "0"),
+        String(hours).padStart(2, "0"),
+        String(minutes).padStart(2, "0"),
+        String(seconds).padStart(2, "0")
+    );
 }
 
 function setupReveal() {
@@ -99,11 +136,9 @@ async function copyInvitationDetails() {
     try {
         await navigator.clipboard.writeText(invitationSummary);
         copyAgendaBtn.textContent = "Tersalin";
-        window.setTimeout(() => {
-            copyAgendaBtn.textContent = "Salin Detail";
-        }, 1800);
-    } catch (error) {
+    } catch {
         copyAgendaBtn.textContent = "Gagal Menyalin";
+    } finally {
         window.setTimeout(() => {
             copyAgendaBtn.textContent = "Salin Detail";
         }, 1800);
@@ -130,11 +165,11 @@ async function shareInvitation() {
 }
 
 openInvitationBtn.addEventListener("click", openInvitation);
-audioToggle.addEventListener("click", toggleAudio);
+sunWidget.addEventListener("click", toggleSun);
 copyAgendaBtn.addEventListener("click", copyInvitationDetails);
 shareBtn.addEventListener("click", shareInvitation);
 
-setAudioState(false);
+setSunState(false);
 setupReveal();
 updateCountdown();
 window.setInterval(updateCountdown, 1000);

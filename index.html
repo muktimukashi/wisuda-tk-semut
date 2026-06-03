@@ -12,10 +12,25 @@
 </head>
 <body>
     <div class="page-shell">
+        <button class="sun-widget" id="sunWidget" type="button" aria-label="Atur musik latar">
+            <span class="sun-core"></span>
+            <span class="sun-label">Musik OFF</span>
+        </button>
+
         <div class="ambient ambient-top"></div>
         <div class="ambient ambient-bottom"></div>
         <div class="spark spark-left"></div>
         <div class="spark spark-right"></div>
+        <div class="cloud cloud-left"></div>
+        <div class="cloud cloud-right"></div>
+        <div class="bird bird-1"></div>
+        <div class="bird bird-2"></div>
+        <div class="bird bird-3"></div>
+        <div class="bird bird-4"></div>
+        <div class="sea-glow"></div>
+        <div class="sea-line"></div>
+        <div class="beach-horizon"></div>
+        <div class="beach-sand"></div>
 
         <div class="welcome-overlay" id="welcomeOverlay" aria-hidden="false">
             <div class="welcome-card">
@@ -32,20 +47,16 @@
             </div>
         </div>
 
-        <audio id="bgMusic" loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <audio id="bgMusic" loop preload="auto">
+            <source src="rukunsamateman.mp3" type="audio/mpeg">
         </audio>
-
-        <button class="audio-toggle hidden" id="audioToggle" type="button" aria-label="Atur musik latar">
-            <span class="audio-icon" id="audioIcon">ON</span>
-        </button>
 
         <main class="container">
             <section class="hero-card reveal">
                 <div class="logo-badge">
                     <img src="logo-web-kbtk-1.png" alt="Logo Semut-Semut dan Yayasan Semut Beriring">
                 </div>
-                <p class="eyebrow">Wisuda TK Semut 2026</p>
+                <p class="eyebrow">Perayaan Langkah Prestasiku TK B 2026</p>
                 <h2 class="main-title">Langkah Ceria<br>Kenangan Bersama</h2>
                 <p class="hero-text">
                     Perjalanan kecil yang penuh warna kini sampai pada panggung istimewa.
@@ -76,7 +87,6 @@
             <section class="countdown-card reveal">
                 <div>
                     <p class="eyebrow">Hitung Mundur Acara</p>
-                    <h3>Menuju Hari Bahagia</h3>
                 </div>
                 <div class="countdown-grid" id="countdown">
                     <div class="countdown-item">
@@ -99,80 +109,7 @@
                 <p class="countdown-note" id="countdownNote">Siapkan senyum terbaik untuk momen spesial ini.</p>
             </section>
 
-            <section class="content-grid">
-                <article class="info-card reveal">
-                    <p class="eyebrow">Pesan</p>
-                    <h3>Sepenggal Kenangan</h3>
-                    <p class="body-copy">
-                        Memori indah terukir seiring kebersamaan yang kita lalui. Rasa syukur
-                        membentang hangat, memeluk asa, cita, dan harapan yang siap tumbuh bersama.
-                    </p>
-                    <p class="body-copy">
-                        Kehadiran Ayah Bunda akan menjadi hadiah terindah bagi ananda pada hari yang penuh makna ini.
-                    </p>
-                </article>
-
-                <article class="info-card reveal">
-                    <p class="eyebrow">Detail Acara</p>
-                    <h3>Informasi Kehadiran</h3>
-                    <ul class="detail-list">
-                        <li>
-                            <span>Tanggal</span>
-                            <strong>Sabtu, 13 Juni 2026</strong>
-                        </li>
-                        <li>
-                            <span>Waktu</span>
-                            <strong>09.00 - 11.30 WIB</strong>
-                        </li>
-                        <li>
-                            <span>Dresscode Orang Tua</span>
-                            <strong>Batik</strong>
-                        </li>
-                        <li>
-                            <span>Lokasi</span>
-                            <strong>Gedung Sekolah TK Semut</strong>
-                        </li>
-                    </ul>
-                </article>
-            </section>
-
-            <section class="timeline-card reveal">
-                <div class="section-heading">
-                    <p class="eyebrow">Rangkaian Acara</p>
-                    <h3>Alur Perayaan</h3>
-                </div>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <span class="timeline-hour">08.30</span>
-                        <div>
-                            <h4>Kedatangan Tamu</h4>
-                            <p>Registrasi dan persiapan sebelum acara dimulai.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-hour">09.00</span>
-                        <div>
-                            <h4>Pembukaan</h4>
-                            <p>Sambutan hangat dan pembukaan perayaan bersama.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-hour">09.30</span>
-                        <div>
-                            <h4>Prosesi Wisuda</h4>
-                            <p>Momen utama penampilan dan penyerahan kenang-kenangan.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-hour">11.00</span>
-                        <div>
-                            <h4>Foto Bersama</h4>
-                            <p>Menyimpan kenangan manis dalam potret kebahagiaan.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+            
             <section class="location-card reveal">
                 <div class="section-heading">
                     <p class="eyebrow">Lokasi Acara</p>
@@ -186,12 +123,12 @@
                     <button class="secondary-button" id="shareBtn" type="button">Bagikan Undangan</button>
                 </div>
             </section>
-        </main>
 
-        <footer class="footer">
-            <p>Perayaan Langkah Prestasiku 2026</p>
-            <p>Terima kasih atas doa, cinta, dan kehadiran Ayah Bunda.</p>
-        </footer>
+            <footer class="footer reveal">
+                <p>Perayaan Langkah Prestasiku 2026</p>
+                <p>Terima kasih atas doa, cinta, dan kehadiran Ayah Bunda.</p>
+            </footer>
+        </main>
     </div>
 
     <script src="script.js"></script>
