@@ -468,7 +468,7 @@ a {
 }
 
 .main-title {
-    font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+    font-size: clamp(1.6rem, 4.5vw, 3.2rem);
     line-height: 0.88;
     margin-bottom: 18px;
 }
